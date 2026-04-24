@@ -21,3 +21,45 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+from media_project import MediaProject
+from evaluation import add_evaluation
+from release_flow import ReleaseFlow
+from channels import Channel
+from identity_tools import attach_identity_hints
+
+def main():
+    project = MediaProject(title="Global Voices Animation", creator="Student A")
+
+    project.add_album("Soundtrack Vol. 1")
+    project.add_animation("Episode 1: Civil Justice Story")
+    project.add_ad_asset("Magazine Spread", "magazine")
+
+    project.add_tag("globalization")
+    project.add_tag("civil_justice")
+
+    add_evaluation(project, "Creativity", 5, "Very original concept.")
+    add_evaluation(project, "Global awareness", 4, "Good cultural perspective.")
+    add_evaluation(project, "Civil justice", 5, "Strong message about fairness.")
+
+    attach_identity_hints(project, language_name="ENGLISH", color_name="Blue")
+
+    flow = ReleaseFlow()
+    flow.add_input(project)
+    flow.confirm_input(project)
+    flow.release_project(project)
+
+    school_gallery = Channel("School Gallery", "Display student work")
+    online_portfolio = Channel("Online Portfolio", "Showcase projects safely")
+
+    school_gallery.add_project(project)
+    online_portfolio.add_project(project)
+
+    print(f"Project: {project.title}")
+    print(f"Status: {project.status}")
+    print("Tags:", project.tags)
+    print("Evaluations:")
+    for ev in project.evaluations:
+        print(f" - {ev.criteria}: {ev.level} ({ev.comments})")
+
+if __name__ == "__main__":
+    main()
